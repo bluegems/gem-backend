@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "FROM users u WHERE u.username=:username AND u.tag=:tag", nativeQuery = false)
-    public Optional<UserEntity> fetchUserByUsernameAndTag(@Param("username") String username, @Param("tag") String tag);
+    Optional<UserEntity> fetchUserByUsernameAndTag(@Param("username") String username, @Param("tag") String tag);
 }

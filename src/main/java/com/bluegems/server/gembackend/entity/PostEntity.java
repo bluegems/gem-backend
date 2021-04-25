@@ -1,6 +1,7 @@
 package com.bluegems.server.gembackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.annotation.processing.Generated;
 import javax.persistence.*;

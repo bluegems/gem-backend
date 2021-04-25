@@ -1,0 +1,16 @@
+type Account {
+    id: ID!
+    email: String!
+}
+
+extend type Query {
+    getAccount(id: ID!): Account
+}
+
+extend type Mutation {
+    createAccount(email: String!, password: String!): Account
+}
+
+extend type Mutation {
+    updateAccount(email: String!, password: String!): Account
+}

@@ -1,13 +1,16 @@
 package com.bluegems.server.gembackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "users")
 @Table(
@@ -39,7 +42,7 @@ public class UserEntity extends AuditEntity {
     private String bio;
 
     @Column(name = "birthdate")
-    private Date birthdate;
+    private LocalDate birthdate;
 
     @Column(name = "profile_picture")
     private String profilePicture;

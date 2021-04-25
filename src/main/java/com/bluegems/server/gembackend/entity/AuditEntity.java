@@ -3,11 +3,16 @@ package com.bluegems.server.gembackend.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Getter
@@ -17,14 +22,12 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class AuditEntity {
 
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false, updatable = false, insertable = false)
-    private Date created;
+    @CreationTimestamp
+    @Column(name = "created", nullable = false, updatable = false)
+    private ZonedDateTime created;
 
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created", nullable = false)
-    private Date modified;
+    @UpdateTimestamp
+    @Column(name = "modified", nullable = false)
+    private ZonedDateTime modified;
 
 }

@@ -9,11 +9,15 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  batch:
+    initialize-schema: always
   datasource:
     platform: postgres
     url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
+    schema: classpath:/database/schema-postgres.sql
+    data: classpath:/database/data-postgres.sql
     initialization-mode: always
 
 logging:
@@ -24,3 +28,7 @@ logging:
 graphql:
   servlet:
     maxQueryDepth: 5
+
+graphiql:
+  subscriptions:
+    timeout: 30000
