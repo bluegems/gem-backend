@@ -6,6 +6,7 @@ import com.bluegems.server.gembackend.exception.graphql.GemGraphQLErrorExtension
 import com.bluegems.server.gembackend.exception.graphql.ThrowableGemGraphQLException;
 import com.bluegems.server.gembackend.repository.AccountRepository;
 import com.bluegems.server.gembackend.repository.UserRepository;
+import com.bluegems.server.gembackend.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +37,7 @@ public class UserDao {
         return user.get();
     }
 
-    public UserEntity createUser(UUID accountId, String username, String tag, String firstName, String lastName, String bio, LocalDate birthDate, String profilePicture) {
+    public UserEntity createUser(UUID accountId, String username, String firstName, String lastName, String bio, LocalDate birthDate, String profilePicture) {
         Optional<AccountEntity> associatedAccount = accountRepository.findById(accountId);
         if (associatedAccount.isEmpty()) {
             log.warn("Account info not found for id {}", accountId);
@@ -44,6 +45,10 @@ public class UserDao {
                     "Account ID not found. Please sign up first",
                     GemGraphQLErrorExtensions.builder().invalidField("accountId").build()
             );
+        }
+        String tag = CommonUtils.createTag(4);
+        while (userRepository.fetchUserByUsernameAndTag(username, tag).isPresent()) {
+            tag = CommonUtils.createTag(4);
         }
         UserEntity userEntity = UserEntity.builder()
                 .accountEntity(associatedAccount.get())
@@ -68,7 +73,8 @@ public class UserDao {
             );
         }
         UserEntity userEntity = foundUser.get();
-        userEntity.setFirstName(firstName);
+
+        userEntity.setFirstName((firstName != null && !firstName.isEmpty()) ? firstName : userEntity.getFirstName());
         userEntity.setLastName(lastName);
         userEntity.setBio(bio);
         userEntity.setBirthdate(birthdate);

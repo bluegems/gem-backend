@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = {"com.bluegems.server.gembackend.repository"})
-public class JpaConfiguration {
+public class JPAConfiguration {
 }

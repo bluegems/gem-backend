@@ -6,6 +6,7 @@ import com.bluegems.server.gembackend.exception.graphql.ThrowableGemGraphQLExcep
 import com.bluegems.server.gembackend.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -19,6 +20,9 @@ public class AccountDao {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public AccountEntity findAccountById(UUID accountId) {
         Optional<AccountEntity> foundAccount = accountRepository.findById(accountId);
         if (foundAccount.isEmpty()) {
@@ -31,11 +35,22 @@ public class AccountDao {
         return foundAccount.get();
     }
 
-    public AccountEntity createAccount(String email, String password) {
+    public AccountEntity findAccountByEmail(String email) {
+        Optional<AccountEntity> foundAccount = accountRepository.findByEmail(email);
+        if (foundAccount.isEmpty()) {
+            log.warn("Could not find account with email : {}", email);
+            throw new ThrowableGemGraphQLException(
+                    "Account with the specified email not found",
+                    GemGraphQLErrorExtensions.builder().invalidField("email").build()
+            );
+        }
+        return foundAccount.get();
+    }
 
+    public AccountEntity createAccount(String email, String password) {
         AccountEntity accountEntity = AccountEntity.builder()
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .build();
         return accountRepository.saveAndFlush(accountEntity);
     }

@@ -8,9 +8,5 @@ extend type Query {
 }
 
 extend type Mutation {
-    createAccount(email: String!, password: String!): Account
-}
-
-extend type Mutation {
     updateAccount(email: String!, password: String!): Account
 }

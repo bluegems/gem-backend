@@ -1,0 +1,19 @@
+extend type Mutation {
+    login(
+        email: String!,
+        password: String!
+    ): String
+}
+
+extend type Mutation {
+    register(
+        email: String!,
+        password: String!,
+        username: String!,
+        firstName: String!,
+        lastName: String,
+        bio: String,
+        birthdate: Date,
+        proficlePicture: String
+    ): User
+}

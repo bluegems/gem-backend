@@ -23,8 +23,10 @@ public class GemGraphQLErrorHandler implements GraphQLErrorHandler {
             ExceptionWhileDataFetching exceptionError = (ExceptionWhileDataFetching) error;
             if (exceptionError.getException() instanceof ThrowableGemGraphQLException) {
                 ThrowableGemGraphQLException exception = (ThrowableGemGraphQLException) exceptionError.getException();
-                return (GraphQLError) GemGraphQLError.builder().message(exception.getMessage()).extensions(exception.getExtensions()).build();
+                return GemGraphQLError.builder().message(exception.getMessage()).extensions(exception.getExtensions()).build();
             }
+        } else {
+            return GemGraphQLError.builder().message(error.getMessage()).build();
         }
         return error;
     }

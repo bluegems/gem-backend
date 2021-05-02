@@ -13,35 +13,10 @@ extend type Query {
 }
 
 extend type Mutation {
-    createUser(
-        accountId: ID!,
-        username: String!,
-        firstName: String!,
-        lastName: String,
-        bio: String,
-        birthdate: Date,
-        proficlePicture: String
-    ): User
-}
-
-extend type Mutation {
-    createAccountAndUser(
-        email: String!,
-        password: String!,
-        username: String!,
-        firstName: String!,
-        lastName: String,
-        bio: String,
-        birthdate: Date,
-        proficlePicture: String
-    ): User
-}
-
-extend type Mutation {
     updateUser(
         username: String!,
         tag: String!,
-        firstName: String!,
+        firstName: String,
         lastName: String,
         bio: String,
         birthdate: Date,
