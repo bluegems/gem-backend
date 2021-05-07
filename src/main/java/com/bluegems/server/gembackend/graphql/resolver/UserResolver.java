@@ -7,7 +7,7 @@ import com.bluegems.server.gembackend.exception.graphql.ThrowableGemGraphQLExcep
 import com.bluegems.server.gembackend.graphql.model.User;
 import com.bluegems.server.gembackend.graphql.utils.EntityToModel;
 import com.bluegems.server.gembackend.security.GemUserDetailsService;
-import com.bluegems.server.gembackend.security.JWTOperations;
+import com.bluegems.server.gembackend.security.jwt.JWTOperations;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Slf4j
 @Component

@@ -10,15 +10,13 @@ import com.bluegems.server.gembackend.graphql.model.User;
 import com.bluegems.server.gembackend.graphql.utils.EntityToModel;
 import com.bluegems.server.gembackend.security.GemUserDetails;
 import com.bluegems.server.gembackend.security.GemUserDetailsService;
-import com.bluegems.server.gembackend.security.JWTOperations;
+import com.bluegems.server.gembackend.security.jwt.JWTOperations;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +50,8 @@ public class CommonResolver implements GraphQLMutationResolver {
         } catch (Exception exception) {
             log.error("Invalid credentials for log in", exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
-            else throw new ThrowableGemGraphQLException("Invalid credentials for login", new GemGraphQLErrorExtensions("email"));
+            else
+                throw new ThrowableGemGraphQLException("Invalid credentials for login", new GemGraphQLErrorExtensions("email"));
         }
         final GemUserDetails gemUserDetails = gemUserDetailsService.loadUserByUsername(email);
         return jwtOperations.createToken(gemUserDetails);

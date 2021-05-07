@@ -1,8 +1,8 @@
-package com.bluegems.server.gembackend.security;
+package com.bluegems.server.gembackend.security.jwt;
 
-import com.bluegems.server.gembackend.exception.graphql.ThrowableGemGraphQLException;
+import com.bluegems.server.gembackend.security.GemUserDetails;
+import com.bluegems.server.gembackend.security.GemUserDetailsService;
 import io.jsonwebtoken.JwtException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.util.function.Predicate.not;
 

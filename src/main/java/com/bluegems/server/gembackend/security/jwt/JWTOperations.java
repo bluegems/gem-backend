@@ -1,5 +1,6 @@
-package com.bluegems.server.gembackend.security;
+package com.bluegems.server.gembackend.security.jwt;
 
+import com.bluegems.server.gembackend.security.GemUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

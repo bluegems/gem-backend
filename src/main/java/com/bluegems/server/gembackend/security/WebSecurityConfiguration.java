@@ -1,5 +1,6 @@
 package com.bluegems.server.gembackend.security;
 
+import com.bluegems.server.gembackend.security.jwt.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
