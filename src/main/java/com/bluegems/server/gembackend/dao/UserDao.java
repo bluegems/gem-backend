@@ -37,6 +37,18 @@ public class UserDao {
         return user.get();
     }
 
+    public UserEntity fetchUserByEmail(String email) {
+        Optional<UserEntity> user = userRepository.fetchUserByEmail(email);
+        if (user.isEmpty()) {
+            log.warn("User not found with email {}", email);
+            throw new ThrowableGemGraphQLException(
+                    "User with the specified email not found",
+                    GemGraphQLErrorExtensions.builder().invalidField("email").build()
+            );
+        }
+        return user.get();
+    }
+
     public UserEntity createUser(UUID accountId, String username, String firstName, String lastName, String bio, LocalDate birthDate, String profilePicture) {
         Optional<AccountEntity> associatedAccount = accountRepository.findById(accountId);
         if (associatedAccount.isEmpty()) {

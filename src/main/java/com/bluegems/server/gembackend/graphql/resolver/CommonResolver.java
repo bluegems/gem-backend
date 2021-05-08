@@ -12,6 +12,7 @@ import com.bluegems.server.gembackend.security.GemUserDetails;
 import com.bluegems.server.gembackend.security.GemUserDetailsService;
 import com.bluegems.server.gembackend.security.jwt.JWTOperations;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +42,7 @@ public class CommonResolver implements GraphQLMutationResolver {
     @Autowired
     private JWTOperations jwtOperations;
 
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("permitAll")
     public String login(String email, String password) {
         UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(email, password);
         try {
@@ -55,10 +56,11 @@ public class CommonResolver implements GraphQLMutationResolver {
         }
         final GemUserDetails gemUserDetails = gemUserDetailsService.loadUserByUsername(email);
         return jwtOperations.createToken(gemUserDetails);
+
     }
 
     @Transactional
-    @PreAuthorize("isAnonymous()")
+    @PreAuthorize("permitAll")
     public User register(String email, String password, String username, String firstName, String lastName, String bio, LocalDate birthdate, String profilePicture) {
         try {
             AccountEntity accountEntity = accountDao.createAccount(email, password);

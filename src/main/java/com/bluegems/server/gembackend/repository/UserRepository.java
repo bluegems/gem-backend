@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "FROM users u WHERE u.username=:username AND u.tag=:tag", nativeQuery = false)
     Optional<UserEntity> fetchUserByUsernameAndTag(@Param("username") String username, @Param("tag") String tag);
+
+    @Query(value = "FROM users u WHERE u.accountEntity.email=:email", nativeQuery = false)
+    Optional<UserEntity> fetchUserByEmail(@Param("email") String email);
 }
