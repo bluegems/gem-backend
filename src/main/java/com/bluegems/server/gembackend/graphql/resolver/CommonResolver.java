@@ -1,6 +1,7 @@
 package com.bluegems.server.gembackend.graphql.resolver;
 
 import com.bluegems.server.gembackend.dao.AccountDao;
+import com.bluegems.server.gembackend.dao.FriendshipDao;
 import com.bluegems.server.gembackend.dao.UserDao;
 import com.bluegems.server.gembackend.entity.AccountEntity;
 import com.bluegems.server.gembackend.entity.UserEntity;
@@ -32,6 +33,9 @@ public class CommonResolver implements GraphQLMutationResolver {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private FriendshipDao friendshipDao;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -67,6 +71,8 @@ public class CommonResolver implements GraphQLMutationResolver {
             log.info("Account created for email : {}", accountEntity.getEmail());
             UserEntity userEntity = userDao.createUser(accountEntity.getId(), username, firstName, lastName, bio, birthdate, profilePicture);
             log.info("User profile created : {}#{}", userEntity.getUsername(), userEntity.getTag());
+            friendshipDao.addDefaultFriends(userEntity);
+            log.info("Default friends added for user : {}#{}", userEntity.getUsername(), userEntity.getTag());
             return EntityToModel.fromUserEntity(userEntity);
         } catch (Exception exception) {
             log.error("Failed to create user", exception);

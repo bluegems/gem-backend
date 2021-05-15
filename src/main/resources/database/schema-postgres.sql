@@ -39,8 +39,23 @@ CREATE TABLE post (
     description TEXT,
     image TEXT,
     PRIMARY KEY (post_id),
-    CONSTRAINT check_null CHECK (description IS NOT NULL OR image IS NOT NULL),
-    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT check_null CHECK (description IS NOT NULL OR image IS NOT NULL)
+);
+
+CREATE TABLE friendship (
+    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    user_one INTEGER NOT NULL,
+    user_two INTEGER NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    modified_by INTEGER NOT NULL,
+    PRIMARY KEY (user_one, user_two),
+    CONSTRAINT fk_user_one FOREIGN KEY (user_one) REFERENCES users(id),
+    CONSTRAINT fk_user_two FOREIGN KEY (user_two) REFERENCES users(id),
+    CONSTRAINT fk_modified_by FOREIGN KEY (modified_by) REFERENCES users(id),
+    CONSTRAINT user_one_two_unique UNIQUE (user_one, user_two),
+    CONSTRAINT check_users_order CHECK (user_one < user_two)
 );
 
 CREATE TABLE comment (

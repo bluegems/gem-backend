@@ -1,0 +1,18 @@
+#type Post {
+#    id: Int!
+#    description: String
+#    image: String
+#    user: User
+#}
+#
+#extend type Query {
+#    getPost(id: Int!) : Post,
+#    getFriendsPost : [Post]
+#}
+#
+#extend type Mutation {
+#    createPost(
+#        description: String,
+#        image: String
+#    ) : Void
+#}

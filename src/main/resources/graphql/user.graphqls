@@ -9,10 +9,7 @@ type User {
 }
 
 extend type Query {
-    getUser(username: String!, tag: String!): User
-}
-
-extend type Query {
+    getUser(username: String!, tag: String!): User,
     getCurrentUser: User
 }
 
