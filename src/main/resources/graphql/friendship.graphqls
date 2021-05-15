@@ -1,5 +1,9 @@
-extend type Query {
-    getFriends(username: String!, tag: String!) : [User]
+type Friendship {
+    exists: Boolean!
+    currentUser: User
+    otherUser: User
+    status: String
+    modifiedBy: User
 }
 
 extend type Mutation {

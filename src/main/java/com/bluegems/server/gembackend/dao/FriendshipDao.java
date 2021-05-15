@@ -54,7 +54,9 @@ public class FriendshipDao {
                 isFriend(currentUser, otherUser, true)
         );
         if (!userOrFriend) {
-            throw new ThrowableGemGraphQLException("Cannot view a powerpuff girl's or a stranger's friend list");
+            log.warn("Cannot view a powerpuff girl's or a stranger's friend list");
+            return null;
+//            throw new ThrowableGemGraphQLException("Cannot view a powerpuff girl's or a stranger's friend list");
         }
         return friendshipRepository.fetchFriendsByUser(otherUser);
     }
@@ -66,6 +68,13 @@ public class FriendshipDao {
                         currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                         currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
                 )
+        );
+    }
+
+    public Optional<FriendshipEntity> fetchOptionalFriendshipByUsers(UserEntity userOne, UserEntity userTwo) {
+        return friendshipRepository.findFriendshipByUsers(
+                userOne.isLessThan(userTwo) ? userOne : userTwo,
+                userOne.isGreaterThan(userTwo) ? userOne : userTwo
         );
     }
 

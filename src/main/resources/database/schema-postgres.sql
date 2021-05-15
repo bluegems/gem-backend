@@ -34,11 +34,11 @@ CREATE TABLE users (
 CREATE TABLE post (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    post_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     user_id INTEGER NOT NULL,
     description TEXT,
     image TEXT,
-    PRIMARY KEY (post_id),
+    PRIMARY KEY (id),
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT check_null CHECK (description IS NOT NULL OR image IS NOT NULL)
 );
@@ -67,7 +67,7 @@ CREATE TABLE comment (
     text TEXT,
     PRIMARY KEY (comment_id),
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(post_id) ON DELETE CASCADE
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
 
 CREATE TABLE post_like (
@@ -76,14 +76,5 @@ CREATE TABLE post_like (
     user_id INTEGER NOT NULL,
     PRIMARY KEY (post_id, user_id),
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(post_id) ON DELETE CASCADE
-);
-
-CREATE TABLE comment_like (
-    created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    comment_id INTEGER NOT NULL,
-    user_id INTEGER NOT NULL,
-    PRIMARY KEY (comment_id, user_id),
-    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_comment_id FOREIGN KEY (comment_id) REFERENCES comment(comment_id) ON DELETE CASCADE
+    CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );

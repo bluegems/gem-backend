@@ -6,6 +6,9 @@ type User {
     bio: String
     birthdate: Date
     profilePicture: String
+    friendship: Friendship
+    friends: [User]
+    posts: [Post]
 }
 
 extend type Query {

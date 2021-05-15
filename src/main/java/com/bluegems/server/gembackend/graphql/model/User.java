@@ -5,6 +5,7 @@ import lombok.Value;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Value
@@ -16,4 +17,7 @@ public class User {
     String bio;
     LocalDate birthdate;
     String profilePicture;
+    Friendship friendship;
+    List<User> friends;
+    List<Post> posts;
 }
