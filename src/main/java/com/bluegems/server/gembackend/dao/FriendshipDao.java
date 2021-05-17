@@ -93,7 +93,7 @@ public class FriendshipDao {
         return friendship.get();
     }
 
-    public void requestFriendship(UserEntity currentUser, UserEntity otherUser) {
+    public FriendshipEntity requestFriendship(UserEntity currentUser, UserEntity otherUser) {
         Optional<FriendshipEntity> friendship = friendshipRepository.findFriendshipByUsers(
                 currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                 currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
@@ -105,17 +105,17 @@ public class FriendshipDao {
             } else {
                 friendshipEntity.setStatus(FriendshipStatus.REQUESTED.toString());
                 friendshipEntity.setModifiedBy(currentUser);
-                friendshipRepository.save(friendshipEntity);
+                return friendshipRepository.save(friendshipEntity);
             }
         } else {
             FriendshipEntity friendshipEntity = createBaseFriendship(currentUser, otherUser);
             friendshipEntity.setStatus(FriendshipStatus.REQUESTED.toString());
             friendshipEntity.setModifiedBy(currentUser);
-            friendshipRepository.save(friendshipEntity);
+            return friendshipRepository.save(friendshipEntity);
         }
     }
 
-    public void acceptFriendship(UserEntity currentUser, UserEntity otherUser) {
+    public FriendshipEntity acceptFriendship(UserEntity currentUser, UserEntity otherUser) {
         Optional<FriendshipEntity> friendship = friendshipRepository.findFriendshipByUsers(
                 currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                 currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
@@ -127,10 +127,10 @@ public class FriendshipDao {
         FriendshipEntity modifiedFriendship = friendship.get();
         modifiedFriendship.setStatus(FriendshipStatus.ACCEPTED.toString());
         modifiedFriendship.setModifiedBy(currentUser);
-        friendshipRepository.save(modifiedFriendship);
+        return friendshipRepository.save(modifiedFriendship);
     }
 
-    public void declineFriendship(UserEntity currentUser, UserEntity otherUser) {
+    public FriendshipEntity declineFriendship(UserEntity currentUser, UserEntity otherUser) {
         Optional<FriendshipEntity> friendship = friendshipRepository.findFriendshipByUsers(
                 currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                 currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
@@ -142,7 +142,7 @@ public class FriendshipDao {
         FriendshipEntity modifiedFriendship = friendship.get();
         modifiedFriendship.setStatus(FriendshipStatus.DECLINED.toString());
         modifiedFriendship.setModifiedBy(currentUser);
-        friendshipRepository.save(modifiedFriendship);
+        return friendshipRepository.save(modifiedFriendship);
     }
 
     public void deleteRequest(UserEntity currentUser, UserEntity otherUser) {
@@ -157,18 +157,18 @@ public class FriendshipDao {
         friendshipRepository.delete(friendship.get());
     }
 
-    public void blockUser(UserEntity currentUser, UserEntity otherUser) {
+    public FriendshipEntity blockUser(UserEntity currentUser, UserEntity otherUser) {
         Optional<FriendshipEntity> friendship = friendshipRepository.findFriendshipByUsers(
                 currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                 currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
         );
         if (friendship.isPresent() && friendship.get().getStatus().equals(FriendshipStatus.BLOCKED.toString())) {
-            assert true; // NO OP
+            return friendship.get();
         } else {
             FriendshipEntity friendshipEntity = friendship.orElseGet(() -> createBaseFriendship(currentUser, otherUser));
             friendshipEntity.setStatus(FriendshipStatus.BLOCKED.toString());
             friendshipEntity.setModifiedBy(currentUser);
-            friendshipRepository.save(friendshipEntity);
+            return friendshipRepository.save(friendshipEntity);
         }
     }
 
@@ -187,6 +187,18 @@ public class FriendshipDao {
             FriendshipEntity friendshipEntity = friendship.get();
             friendshipRepository.delete(friendshipEntity);
         }
+    }
+
+    public void unfriendUser(UserEntity currentUser, UserEntity otherUser) {
+        Optional<FriendshipEntity> friendship = friendshipRepository.findFriendshipByUsers(
+                currentUser.isLessThan(otherUser) ? currentUser : otherUser,
+                currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
+        );
+        if (friendship.isEmpty() || !canUnfriend(currentUser, otherUser, friendship.get())) {
+            log.warn("These users are not friends");
+            throw new ThrowableGemGraphQLException("This user is not a friend");
+        }
+        friendshipRepository.delete(friendship.get());
     }
 
     private Boolean canRequestFriendship(UserEntity currentUser, UserEntity otherUser, FriendshipEntity friendshipEntity) {
@@ -217,6 +229,10 @@ public class FriendshipDao {
                 friendshipEntity.getStatus().equalsIgnoreCase(FriendshipStatus.BLOCKED.toString()),
                 friendshipEntity.getModifiedBy().equals(currentUser)
         );
+    }
+
+    private Boolean canUnfriend(UserEntity currentUser, UserEntity otherUser, FriendshipEntity friendshipEntity) {
+        return friendshipEntity.getStatus().equals(FriendshipStatus.ACCEPTED.toString());
     }
 
     private FriendshipEntity createBaseFriendship(UserEntity userOne, UserEntity userTwo) {

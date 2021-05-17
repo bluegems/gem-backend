@@ -48,6 +48,7 @@ public class EntityToModel {
                 .description(postEntity.getDescription())
                 .image(postEntity.getImage())
                 .user(fromUserEntity(postEntity.getUserEntity()))
+                .modifiedDatetime(postEntity.getModified())
                 .build();
     }
 }

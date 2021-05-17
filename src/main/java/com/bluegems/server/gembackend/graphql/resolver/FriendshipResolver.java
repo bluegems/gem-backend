@@ -46,12 +46,12 @@ public class FriendshipResolver implements GraphQLMutationResolver {
 //    }
 
     @PreAuthorize("isAuthenticated()")
-    public void requestFriendship(String requestedUserUsername, String requestedUserTag) {
+    public Friendship requestFriendship(String requestedUserUsername, String requestedUserTag) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
-            friendshipDao.requestFriendship(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(friendshipDao.requestFriendship(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
             log.error("Failed to send a friend request to user "+requestedUserUsername+"#"+requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
@@ -60,12 +60,12 @@ public class FriendshipResolver implements GraphQLMutationResolver {
     }
 
     @PreAuthorize("isAuthenticated()")
-    public void acceptFriendship(String requestedUserUsername, String requestedUserTag) {
+    public Friendship acceptFriendship(String requestedUserUsername, String requestedUserTag) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
-            friendshipDao.acceptFriendship(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(friendshipDao.acceptFriendship(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
             log.error("Failed to accept friend request from user "+requestedUserUsername+"#"+requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
@@ -74,12 +74,12 @@ public class FriendshipResolver implements GraphQLMutationResolver {
     }
 
     @PreAuthorize("isAuthenticated()")
-    public void declineFriendship(String requestedUserUsername, String requestedUserTag) {
+    public Friendship declineFriendship(String requestedUserUsername, String requestedUserTag) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
-            friendshipDao.declineFriendship(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(friendshipDao.declineFriendship(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
             log.error("Failed to decline friend request from user "+requestedUserUsername+"#"+requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
@@ -88,12 +88,13 @@ public class FriendshipResolver implements GraphQLMutationResolver {
     }
 
     @PreAuthorize("isAuthenticated()")
-    public void deleteRequest(String requestedUserUsername, String requestedUserTag) {
+    public Friendship deleteRequest(String requestedUserUsername, String requestedUserTag) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
             friendshipDao.deleteRequest(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(null, null, null);
         } catch (Exception exception) {
             log.error("Failed to delete friend request to user "+requestedUserUsername+"#"+requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
@@ -102,12 +103,12 @@ public class FriendshipResolver implements GraphQLMutationResolver {
     }
 
     @PreAuthorize("isAuthenticated()")
-    public void blockUser(String requestedUserUsername, String requestedUserTag) {
+    public Friendship blockUser(String requestedUserUsername, String requestedUserTag) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
-            friendshipDao.blockUser(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(friendshipDao.blockUser(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
             log.error("Failed to block user "+requestedUserUsername+"#"+requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
@@ -116,12 +117,28 @@ public class FriendshipResolver implements GraphQLMutationResolver {
     }
 
     @PreAuthorize("isAuthenticated()")
-    public void unblockUser(String requestedUserUsername, String requestedUserTag) {
+    public Friendship unblockUser(String requestedUserUsername, String requestedUserTag) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
             friendshipDao.unblockUser(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(null, null, null);
+        } catch (Exception exception) {
+            log.error("Failed to unblock user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            if (exception instanceof ThrowableGemGraphQLException) throw exception;
+            else throw new ThrowableGemGraphQLException("Server encountered error while unblocking user");
+        }
+    }
+
+    @PreAuthorize("isAuthenticated")
+    public Friendship unfriendUser(String requestedUserUsername, String requestedUserTag) {
+        try {
+            String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+            UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
+            UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
+            friendshipDao.unfriendUser(currentUser, requestedUser);
+            return EntityToModel.fromFriendshipEntity(null, null, null);
         } catch (Exception exception) {
             log.error("Failed to unblock user "+requestedUserUsername+"#"+requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;

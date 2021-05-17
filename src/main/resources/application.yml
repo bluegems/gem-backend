@@ -17,8 +17,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
-    schema: classpath:/database/schema-postgres.sql
-    data: classpath:/database/data-postgres.sql
+#    schema: classpath:/database/schema-postgres.sql
+#    data: classpath:/database/data-postgres.sql
     initialization-mode: always
 
 logging:

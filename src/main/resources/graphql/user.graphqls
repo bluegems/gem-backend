@@ -24,6 +24,6 @@ extend type Mutation {
         lastName: String,
         bio: String,
         birthdate: Date,
-        proficlePicture: String
+        profilePicture: String
     ): User
 }

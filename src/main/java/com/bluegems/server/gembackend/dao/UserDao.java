@@ -75,17 +75,18 @@ public class UserDao {
         return userRepository.saveAndFlush(userEntity);
     }
 
-    public UserEntity updateUser(String username, String tag, String firstName, String lastName, String bio, LocalDate birthdate, String profilePicture) {
-        Optional<UserEntity> foundUser = userRepository.fetchUserByUsernameAndTag(username, tag);
+    public UserEntity updateUser(String currentUserUsername, String currentUserTag, String username, String tag, String firstName, String lastName, String bio, LocalDate birthdate, String profilePicture) {
+        Optional<UserEntity> foundUser = userRepository.fetchUserByUsernameAndTag(currentUserUsername, currentUserTag);
         if (foundUser.isEmpty()) {
-            log.warn("User not found {}#{}", username, tag);
+            log.warn("User not found {}#{}", currentUserUsername, currentUserTag);
             throw new ThrowableGemGraphQLException(
                     "User with the specified username and tag not found",
                     GemGraphQLErrorExtensions.builder().invalidField("username").build()
             );
         }
         UserEntity userEntity = foundUser.get();
-
+        userEntity.setUsername(username);
+        userEntity.setTag(tag);
         userEntity.setFirstName((firstName != null && !firstName.isEmpty()) ? firstName : userEntity.getFirstName());
         userEntity.setLastName(lastName);
         userEntity.setBio(bio);

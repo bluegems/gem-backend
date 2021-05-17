@@ -32,7 +32,7 @@ public class FriendshipEntity extends AuditEntity {
     @Column(name = "status", nullable = false)
     private String status;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "modified_by", nullable = false)
     private UserEntity modifiedBy;
 }

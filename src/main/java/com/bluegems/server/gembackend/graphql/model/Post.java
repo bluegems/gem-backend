@@ -3,6 +3,8 @@ package com.bluegems.server.gembackend.graphql.model;
 import lombok.Builder;
 import lombok.Value;
 
+import java.time.ZonedDateTime;
+
 @Builder
 @Value
 public class Post {
@@ -10,4 +12,5 @@ public class Post {
     String description;
     String image;
     User user;
+    ZonedDateTime modifiedDatetime;
 }

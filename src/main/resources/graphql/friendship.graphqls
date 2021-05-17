@@ -7,10 +7,11 @@ type Friendship {
 }
 
 extend type Mutation {
-    requestFriendship(username: String!, tag: String!) : Void,
-    acceptFriendship(username: String!, tag: String!): Void,
-    declineFriendship(username: String!, tag: String!): Void,
-    deleteRequest(username: String!, tag: String!): Void,
-    blockUser(username: String!, tag: String): Void,
-    unblockUser(username: String!, tag: String): Void
+    requestFriendship(username: String!, tag: String!) : Friendship,
+    acceptFriendship(username: String!, tag: String!): Friendship,
+    declineFriendship(username: String!, tag: String!): Friendship,
+    deleteRequest(username: String!, tag: String!): Friendship,
+    blockUser(username: String!, tag: String): Friendship,
+    unblockUser(username: String!, tag: String): Friendship,
+    unfriendUser(username: String!, tag: String!): Friendship
 }

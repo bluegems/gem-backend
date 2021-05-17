@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -58,14 +59,18 @@ public class UserResolver implements GraphQLQueryResolver, GraphQLMutationResolv
         } catch (Exception exception) {
             log.error("Failed to fetch user details from token", exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
-            else throw new ThrowableGemGraphQLException("Server encountered error while fetching user details from token");
+            else
+                throw new ThrowableGemGraphQLException("Server encountered error while fetching user details from token");
         }
     }
 
+    @Transactional
     @PreAuthorize("isAuthenticated()")
     public User updateUser(String username, String tag, String firstName, String lastName, String bio, LocalDate birthdate, String profilePicture) {
         try {
-            UserEntity userEntity = userDao.updateUser(username, tag, firstName, lastName, bio, birthdate, profilePicture);
+            String email = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+            UserEntity currentUser = userDao.fetchUserByEmail(email);
+            UserEntity userEntity = userDao.updateUser(currentUser.getUsername(), currentUser.getTag(), username, tag, firstName, lastName, bio, birthdate, profilePicture);
             return EntityToModel.fromUserEntity(userEntity);
         } catch (Exception exception) {
             log.error("Failed to update user details", exception);

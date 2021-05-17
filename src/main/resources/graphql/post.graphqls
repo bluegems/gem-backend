@@ -2,7 +2,8 @@ type Post {
     id: Int!
     description: String
     image: String
-    user: User
+    user: User!
+    modifiedDatetime: DateTime!
 }
 
 extend type Query {
