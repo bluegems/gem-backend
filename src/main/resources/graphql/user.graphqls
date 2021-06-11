@@ -8,12 +8,14 @@ type User {
     profilePicture: String
     friendship: Friendship
     friends: [User]
+    friendRequests: [User]!
     posts: [Post]
 }
 
 extend type Query {
     getUser(username: String!, tag: String!): User,
-    getCurrentUser: User
+    getCurrentUser: User,
+    searchUsers(searchString: String!): [User!]!
 }
 
 extend type Mutation {
@@ -24,6 +26,7 @@ extend type Mutation {
         lastName: String,
         bio: String,
         birthdate: Date,
-        profilePicture: String
+        profilePicture: ImageInput,
+        keepPreviousPicture: Boolean!
     ): User
 }

@@ -2,8 +2,10 @@ type Post {
     id: Int!
     description: String
     image: String
+    isLiked: Boolean!
     user: User!
     modifiedDatetime: DateTime!
+    comments: [Comment]!
 }
 
 extend type Query {
@@ -12,8 +14,7 @@ extend type Query {
 }
 
 extend type Mutation {
-    createPost(
-        description: String,
-        image: String
-    ) : Post
+    createPost(description: String,image: ImageInput) : Post,
+    likePost(id: Int!) : Post!,
+    unlikePost(id : Int!) : Post!
 }

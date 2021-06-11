@@ -56,7 +56,6 @@ public class FriendshipDao {
         if (!userOrFriend) {
             log.warn("Cannot view a powerpuff girl's or a stranger's friend list");
             return null;
-//            throw new ThrowableGemGraphQLException("Cannot view a powerpuff girl's or a stranger's friend list");
         }
         return friendshipRepository.fetchFriendsByUser(otherUser);
     }
@@ -76,6 +75,10 @@ public class FriendshipDao {
                 userOne.isLessThan(userTwo) ? userOne : userTwo,
                 userOne.isGreaterThan(userTwo) ? userOne : userTwo
         );
+    }
+
+    public List<UserEntity> fetchFriendRequestsForUser(UserEntity user) {
+        return friendshipRepository.fetchFriendRequestsForUser(user);
     }
 
     public FriendshipEntity fetchFriendshipByUsers(UserEntity userOne, UserEntity userTwo) {

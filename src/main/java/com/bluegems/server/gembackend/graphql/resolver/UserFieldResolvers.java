@@ -59,6 +59,19 @@ public class UserFieldResolvers implements GraphQLResolver<User> {
     }
 
     @PreAuthorize("isAuthenticated()")
+    public List<User> friendRequests(User user) {
+        try {
+            String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+            UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
+            return friendshipDao.fetchFriendRequestsForUser(currentUser).stream().map(EntityToModel::fromUserEntity).collect(Collectors.toList());
+        } catch (Exception exception) {
+            log.error("Failed to fetch pending requests for user", exception);
+            if (exception instanceof ThrowableGemGraphQLException) throw exception;
+            else throw new ThrowableGemGraphQLException("Server encountered error while fetching pending requests");
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
     public List<User> friends(User user) {
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();

@@ -35,6 +35,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
 
 		<!-- GraphQL -->
 		<dependency>
@@ -96,6 +100,14 @@
 			<version>0.11.2</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- Imgur -->
+		<dependency>
+			<groupId>com.github.parinithshekar</groupId>
+			<artifactId>baringo</artifactId>
+			<version>bluegems-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -106,5 +118,12 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
 
 </project>

@@ -1,0 +1,4 @@
+input ImageInput {
+    base64String: String
+    filename: String
+}

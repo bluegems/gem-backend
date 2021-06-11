@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,6 +48,10 @@ public class UserDao {
             );
         }
         return user.get();
+    }
+
+    public List<UserEntity> searchUsers(String searchString) {
+        return userRepository.searchUsersByNameOrUsername(searchString);
     }
 
     public UserEntity createUser(UUID accountId, String username, String firstName, String lastName, String bio, LocalDate birthDate, String profilePicture) {

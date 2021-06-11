@@ -2,7 +2,6 @@ package com.bluegems.server.gembackend.graphql.resolver;
 
 import com.bluegems.server.gembackend.dao.FriendshipDao;
 import com.bluegems.server.gembackend.dao.UserDao;
-import com.bluegems.server.gembackend.entity.FriendshipEntity;
 import com.bluegems.server.gembackend.entity.UserEntity;
 import com.bluegems.server.gembackend.exception.graphql.ThrowableGemGraphQLException;
 import com.bluegems.server.gembackend.graphql.model.Friendship;
@@ -18,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -31,20 +29,6 @@ public class FriendshipResolver implements GraphQLMutationResolver {
     @Autowired
     private FriendshipDao friendshipDao;
 
-//    @PreAuthorize("isAuthenticated()")
-//    public List<User> getFriends(String requestedUserUsername, String requestedUserTag) {
-//        try {
-//            String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-//            UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
-//            UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
-//            return friendshipDao.fetchFriendsByUser(currentUser, requestedUser).stream().map(EntityToModel::fromUserEntity).collect(Collectors.toList());
-//        } catch (Exception exception) {
-//            log.error("Failed to fetch friends for user "+requestedUserUsername+"#"+requestedUserTag, exception);
-//            if (exception instanceof ThrowableGemGraphQLException) throw exception;
-//            else throw new ThrowableGemGraphQLException("Server encountered error while fetching user friends");
-//        }
-//    }
-
     @PreAuthorize("isAuthenticated()")
     public Friendship requestFriendship(String requestedUserUsername, String requestedUserTag) {
         try {
@@ -53,7 +37,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
             return EntityToModel.fromFriendshipEntity(friendshipDao.requestFriendship(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
-            log.error("Failed to send a friend request to user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to send a friend request to user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while sending friend request");
         }
@@ -67,7 +51,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
             return EntityToModel.fromFriendshipEntity(friendshipDao.acceptFriendship(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
-            log.error("Failed to accept friend request from user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to accept friend request from user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while accepting friend request");
         }
@@ -81,7 +65,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
             return EntityToModel.fromFriendshipEntity(friendshipDao.declineFriendship(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
-            log.error("Failed to decline friend request from user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to decline friend request from user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while declining friend request");
         }
@@ -96,7 +80,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             friendshipDao.deleteRequest(currentUser, requestedUser);
             return EntityToModel.fromFriendshipEntity(null, null, null);
         } catch (Exception exception) {
-            log.error("Failed to delete friend request to user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to delete friend request to user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while deleting friend request");
         }
@@ -110,7 +94,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             UserEntity requestedUser = userDao.fetchUserByUsernameAndTag(requestedUserUsername, requestedUserTag);
             return EntityToModel.fromFriendshipEntity(friendshipDao.blockUser(currentUser, requestedUser), currentUser, requestedUser);
         } catch (Exception exception) {
-            log.error("Failed to block user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to block user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while blocking user");
         }
@@ -125,7 +109,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             friendshipDao.unblockUser(currentUser, requestedUser);
             return EntityToModel.fromFriendshipEntity(null, null, null);
         } catch (Exception exception) {
-            log.error("Failed to unblock user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to unblock user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while unblocking user");
         }
@@ -140,7 +124,7 @@ public class FriendshipResolver implements GraphQLMutationResolver {
             friendshipDao.unfriendUser(currentUser, requestedUser);
             return EntityToModel.fromFriendshipEntity(null, null, null);
         } catch (Exception exception) {
-            log.error("Failed to unblock user "+requestedUserUsername+"#"+requestedUserTag, exception);
+            log.error("Failed to unblock user " + requestedUserUsername + "#" + requestedUserTag, exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
             else throw new ThrowableGemGraphQLException("Server encountered error while unblocking user");
         }

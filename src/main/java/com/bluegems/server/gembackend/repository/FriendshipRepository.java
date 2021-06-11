@@ -19,6 +19,11 @@ public interface FriendshipRepository extends JpaRepository<FriendshipEntity, Fr
     Boolean isFriend(@Param("userOne") UserEntity userOne, @Param("userTwo") UserEntity userTwo);
 
     @Query(value = "SELECT u FROM users u " +
+            "WHERE u in (SELECT f.modifiedBy FROM friendship f " +
+            "WHERE ((f.userOne=:user OR f.userTwo=:user) AND f.status='REQUESTED' AND f.modifiedBy!=:user))")
+    List<UserEntity> fetchFriendRequestsForUser(@Param("user") UserEntity user);
+
+    @Query(value = "SELECT u FROM users u " +
             "WHERE u in (SELECT f.userOne FROM friendship f WHERE f.status='ACCEPTED' AND f.userTwo=:user) " +
             "OR u in (SELECT f.userTwo FROM friendship f WHERE f.status='ACCEPTED' AND f.userOne=:user)")
     List<UserEntity> fetchFriendsByUser(@Param("user") UserEntity user);

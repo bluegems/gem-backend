@@ -7,11 +7,10 @@ import java.time.ZonedDateTime;
 
 @Builder
 @Value
-public class Post {
+public class Comment {
     Long id;
-    String description;
-    String image;
-    Boolean isLiked;
+    String text;
+    ZonedDateTime datetime;
     User user;
-    ZonedDateTime modifiedDatetime;
+    Post post;
 }

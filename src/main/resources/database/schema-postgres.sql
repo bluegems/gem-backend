@@ -61,17 +61,18 @@ CREATE TABLE friendship (
 CREATE TABLE comment (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    comment_id SERIAL NOT NULL,
+    id SERIAL NOT NULL,
     user_id INTEGER NOT NULL,
     post_id INTEGER NOT NULL,
     text TEXT,
-    PRIMARY KEY (comment_id),
+    PRIMARY KEY (id),
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
 
 CREATE TABLE post_like (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     PRIMARY KEY (post_id, user_id),
