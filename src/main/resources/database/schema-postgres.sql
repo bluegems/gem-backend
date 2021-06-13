@@ -5,7 +5,7 @@ CREATE SCHEMA public;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- create tables and assign modified triggers
-CREATE TABLE account (
+CREATE TABLE IF NOT EXISTS account (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id UUID NOT NULL DEFAULT uuid_generate_v4 (),
@@ -14,7 +14,7 @@ CREATE TABLE account (
     PRIMARY KEY (id)
 );
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id SERIAL NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE users (
     CONSTRAINT username_tag_unique UNIQUE (username, tag)
 );
 
-CREATE TABLE post (
+CREATE TABLE IF NOT EXISTS post (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id SERIAL NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE post (
     CONSTRAINT check_null CHECK (description IS NOT NULL OR image IS NOT NULL)
 );
 
-CREATE TABLE friendship (
+CREATE TABLE IF NOT EXISTS friendship (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_one INTEGER NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE friendship (
     CONSTRAINT check_users_order CHECK (user_one < user_two)
 );
 
-CREATE TABLE comment (
+CREATE TABLE IF NOT EXISTS comment (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id SERIAL NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE comment (
     CONSTRAINT fk_post_id FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE
 );
 
-CREATE TABLE post_like (
+CREATE TABLE IF NOT EXISTS post_like (
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_id INTEGER NOT NULL,

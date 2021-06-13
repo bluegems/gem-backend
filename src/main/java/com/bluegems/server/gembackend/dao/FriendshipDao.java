@@ -28,19 +28,19 @@ public class FriendshipDao {
     @Autowired
     private FriendshipRepository friendshipRepository;
 
-    private List<UserEntity> powerpuffGirls;
+    private List<UserEntity> heroes;
 
     @PostConstruct
     public void init() {
-        powerpuffGirls = userRepository.fetchPowerpuffGirls();
+        heroes = userRepository.fetchHeroes();
     }
 
     public void addDefaultFriends(UserEntity userEntity) {
-        List<FriendshipEntity> defaultFriendships = powerpuffGirls.stream().map(
-                girl -> {
-                    FriendshipEntity friendshipEntity = createBaseFriendship(girl, userEntity);
+        List<FriendshipEntity> defaultFriendships = heroes.stream().map(
+                hero -> {
+                    FriendshipEntity friendshipEntity = createBaseFriendship(hero, userEntity);
                     friendshipEntity.setStatus(FriendshipStatus.ACCEPTED.toString());
-                    friendshipEntity.setModifiedBy(girl);
+                    friendshipEntity.setModifiedBy(hero);
                     return friendshipEntity;
                 }
         ).collect(Collectors.toList());
@@ -62,7 +62,7 @@ public class FriendshipDao {
 
     public Boolean isFriend(UserEntity currentUser, UserEntity otherUser, Boolean ignorePowerpuffGirls) {
         return Boolean.logicalAnd(
-                (!ignorePowerpuffGirls || !powerpuffGirls.contains(otherUser)),
+                (!ignorePowerpuffGirls || !heroes.contains(otherUser)),
                 friendshipRepository.isFriend(
                         currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                         currentUser.isGreaterThan(otherUser) ? currentUser : otherUser

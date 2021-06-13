@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 
-    @Query(value = "SELECT c FROM comment c JOIN FETCH c.userEntity JOIN FETCH c.postEntity cp JOIN FETCH cp.userEntity WHERE cp.id=:postId")
+    @Query(value = "SELECT c FROM comment c JOIN FETCH c.userEntity JOIN FETCH c.postEntity cp JOIN FETCH cp.userEntity WHERE cp.id=:postId ORDER BY c.modified DESC")
     List<CommentEntity> fetchCommentsByPostId(@Param("postId") Long postId);
 }

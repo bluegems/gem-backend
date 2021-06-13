@@ -18,8 +18,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query(value = "FROM users u WHERE u.accountEntity.email=:email")
     Optional<UserEntity> fetchUserByEmail(@Param("email") String email);
 
-    @Query(value = "SELECT u FROM users u WHERE u.accountEntity.email IN ('blossom@bluegems.com','buttercup@bluegems.com','bubbles@bluegems.com')")
-    List<UserEntity> fetchPowerpuffGirls();
+    @Query(value = "SELECT u FROM users u WHERE u.accountEntity.email IN ('superman@bluegems.com','batman@bluegems.com','wolverine@bluegems.com')")
+    List<UserEntity> fetchHeroes();
 
     @Query(value = "SELECT u FROM users u WHERE u.firstName LIKE :searchString% OR u.lastName LIKE :searchString% OR u.username LIKE :searchString%")
     List<UserEntity> searchUsersByNameOrUsername(@Param("searchString") String searchString);

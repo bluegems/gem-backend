@@ -17,16 +17,11 @@ import java.net.http.HttpClient;
 @Configuration
 public class BaringoConfig {
 
-    private static final String IMGUR_BASE_URL="https://api.imgur.com/3";
-
     @Value("${imgur.client-id}")
     private String IMGUR_CLIENT_ID;
 
     @Value("${imgur.client-secret}")
     private String IMGUR_CLIENT_SECRET;
-
-    @Value("${imgur.access-token}")
-    private String IMGUR_ACCESS_TOKEN;
 
     @Value("${imgur.refresh-token}")
     private String IMGUR_REFRESH_TOKEN;

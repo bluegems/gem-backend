@@ -1,74 +1,74 @@
 INSERT INTO account VALUES (
   DEFAULT, DEFAULT, DEFAULT,
-  'blossom@bluegems.com',
+  'superman@bluegems.com',
   'password123'
 );
 
 INSERT INTO account VALUES (
   DEFAULT, DEFAULT, DEFAULT,
-  'bubbles@bluegems.com',
+  'batman@bluegems.com',
   'password123'
 );
 
 INSERT INTO account VALUES (
   DEFAULT, DEFAULT, DEFAULT,
-  'buttercup@bluegems.com',
+  'wolverine@bluegems.com',
   'password123'
 );
 
 INSERT INTO users VALUES (
     DEFAULT, DEFAULT, DEFAULT,
-    'PNK1',
-    'blossomIsPink',
-    'Blossom',
-    'X',
-    'The tactician and self-proclaimed leader of the Powerpuff Girls',
+    'DC01',
+    'superman',
+    'Kal',
+    'El',
+    'Super strength, icy breath and lazer eyes. Allergic to green crystals',
     '1998-11-18',
-    'BWkr3du',
-    (SELECT id FROM account WHERE email='blossom@bluegems.com')
+    '0KahUrK',
+    (SELECT id FROM account WHERE email='superman@bluegems.com')
 );
 
 INSERT INTO users VALUES (
     DEFAULT, DEFAULT, DEFAULT,
-    'GRN2',
-    'buttercupIsGreen',
-    'Buttercup',
-    'X',
-    'Loves to get dirty, fights hard and plays rough. She does not plan and is all action',
+    'DC02',
+    'batman',
+    'Bruce',
+    'Wayne',
+    'Resilient and rich ninja who wears a cape. Voice modulation changes my vibe',
     '1998-11-18',
-    'YOL4mMo',
-    (SELECT id FROM account WHERE email='buttercup@bluegems.com')
+    'ePGVUbd',
+    (SELECT id FROM account WHERE email='batman@bluegems.com')
 );
 
 INSERT INTO users VALUES (
     DEFAULT, DEFAULT, DEFAULT,
-    'BLU3',
-    'bubblesIsBlue',
-    'Bubbles',
-    'X',
-    'Kind and very sweet but capable of extreme rage and can fight monsters just as well as her sisters',
+    'MV03',
+    'wolverine',
+    'Logan',
+    NULL,
+    'I don''t know where I''m from or who you are... You should be scared of me',
     '1998-11-18',
-    'pGFyviQ',
-    (SELECT id FROM account WHERE email='bubbles@bluegems.com')
+    'lCYDFSo',
+    (SELECT id FROM account WHERE email='wolverine@bluegems.com')
 );
 
 INSERT INTO post VALUES (
     DEFAULT, DEFAULT, DEFAULT,
-    (SELECT id FROM users WHERE username='bubblesIsBlue' AND tag='BLU3'),
-    'Octi says I''m a good girl :)',
+    (SELECT id FROM users WHERE username='superman' AND tag='DC01'),
+    'Earth is home!',
     NULL
 );
 
 INSERT INTO post VALUES (
     DEFAULT, DEFAULT, DEFAULT,
-    (SELECT id FROM users WHERE username='blossomIsPink' AND tag='PNK1'),
-    'Isn''t this beautiful. Really brings out the red!',
-    'KTtRBzq'
+    (SELECT id FROM users WHERE username='batman' AND tag='DC02'),
+    'I hear this dude''s a ninja too',
+    '8JPPEX2'
 );
 
 INSERT INTO post VALUES (
     DEFAULT, DEFAULT, DEFAULT,
-    (SELECT id FROM users WHERE username='buttercupIsGreen' AND tag='GRN2'),
+    (SELECT id FROM users WHERE username='wolverine' AND tag='MV03'),
     NULL,
-    'A93HjP9'
+    'LUtoBfz'
 );

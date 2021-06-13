@@ -2,6 +2,7 @@ spring:
   main:
     banner-mode: off
   jpa:
+    generate-ddl: false
     hibernate:
       ddl-auto: none
     properties:
@@ -14,17 +15,12 @@ spring:
     initialize-schema: always
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB}
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
-#    schema: classpath:/database/schema-postgres.sql
-#    data: classpath:/database/data-postgres.sql
+    schema: classpath:/database/schema-postgres.sql
+    data: classpath:/database/data-postgres.sql
     initialization-mode: always
-
-logging:
-  level:
-    org:
-      springframework: INFO
 
 graphql:
   servlet:
