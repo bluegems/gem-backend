@@ -13,11 +13,14 @@ spring:
             non_contextual_creation: true
   batch:
     initialize-schema: always
-  datasource:
-    platform: postgres
-    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
+#  datasource:
+#    platform: postgres
+#    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+#    username: ${POSTGRES_USERNAME}
+#    password: ${POSTGRES_PASSWORD}
+
+database:
+  url: ${DATABASE_URL}
 
 graphql:
   servlet:
