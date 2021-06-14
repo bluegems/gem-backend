@@ -22,6 +22,9 @@ spring:
 database:
   url: ${DATABASE_URL}
 
+server:
+  port: ${PORT}
+
 graphql:
   servlet:
     maxQueryDepth: 5
