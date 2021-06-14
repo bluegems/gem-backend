@@ -40,5 +40,4 @@ imgur:
   client-id: ${IMGUR_CLIENT_ID}
   client-secret: ${IMGUR_CLIENT_SECRET}
   refresh-token: ${IMGUR_REFRESH_TOKEN}
-  access-token: ${IMGUR_ACCESS_TOKEN}
   album-delete-hash: ${IMGUR_ALBUM_DELETE_HASH}
