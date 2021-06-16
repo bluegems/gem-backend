@@ -77,7 +77,7 @@ public class PostDao {
             throw new ThrowableGemGraphQLException("Post with this ID does not exist");
         }
         UserEntity otherUser = post.get().getUserEntity();
-        if (!friendshipRepository.isFriend(
+        if (!currentUser.equals(otherUser) && !friendshipRepository.isFriend(
                 currentUser.isLessThan(otherUser) ? currentUser : otherUser,
                 currentUser.isGreaterThan(otherUser) ? currentUser : otherUser
         )) {
