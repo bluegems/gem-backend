@@ -65,8 +65,11 @@ public class PostResolver implements GraphQLQueryResolver, GraphQLMutationResolv
         try {
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
-            Image imgurImage = imgurService.uploadImage(image.getBase64String(), image.getFilename());
-            return EntityToModel.fromPostEntity(postDao.createPost(currentUser, description, imgurImage.getId()));
+            String imgurImageId = null;
+            if (image!=null) {
+                imgurImageId = imgurService.uploadImage(image.getBase64String(), image.getFilename()).getId();
+            }
+            return EntityToModel.fromPostEntity(postDao.createPost(currentUser, description, imgurImageId));
         } catch (Exception exception) {
             log.error("Failed to create post", exception);
             if (exception instanceof ThrowableGemGraphQLException) throw exception;
