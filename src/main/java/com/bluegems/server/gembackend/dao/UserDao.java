@@ -54,7 +54,7 @@ public class UserDao {
         return userRepository.searchUsersByNameOrUsername(searchString);
     }
 
-    public UserEntity createUser(UUID accountId, String username, String firstName, String lastName, String bio, LocalDate birthDate, String profilePicture) {
+    public UserEntity createUser(UUID accountId, String username, String firstName, String lastName, String bio, String profilePicture) {
         Optional<AccountEntity> associatedAccount = accountRepository.findById(accountId);
         if (associatedAccount.isEmpty()) {
             log.warn("Account info not found for id {}", accountId);
@@ -73,14 +73,13 @@ public class UserDao {
                 .username(username)
                 .tag(tag)
                 .build();
-        userEntity.setBirthdate(birthDate);
         userEntity.setBio((bio != null && !bio.isEmpty()) ? bio : null);
         userEntity.setLastName((lastName != null && !lastName.isEmpty()) ? lastName : null);
         userEntity.setProfilePicture((profilePicture != null && !profilePicture.isEmpty()) ? profilePicture : null);
         return userRepository.saveAndFlush(userEntity);
     }
 
-    public UserEntity updateUser(String currentUserUsername, String currentUserTag, String username, String tag, String firstName, String lastName, String bio, LocalDate birthdate, String profilePicture) {
+    public UserEntity updateUser(String currentUserUsername, String currentUserTag, String username, String tag, String firstName, String lastName, String bio, String profilePicture) {
         Optional<UserEntity> foundUser = userRepository.fetchUserByUsernameAndTag(currentUserUsername, currentUserTag);
         if (foundUser.isEmpty()) {
             log.warn("User not found {}#{}", currentUserUsername, currentUserTag);
@@ -95,7 +94,6 @@ public class UserDao {
         userEntity.setFirstName((firstName != null && !firstName.isEmpty()) ? firstName : userEntity.getFirstName());
         userEntity.setLastName(lastName);
         userEntity.setBio(bio);
-        userEntity.setBirthdate(birthdate);
         userEntity.setProfilePicture(profilePicture);
         return userRepository.saveAndFlush(userEntity);
     }

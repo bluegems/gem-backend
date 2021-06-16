@@ -4,7 +4,6 @@ type User {
     firstName: String!
     lastName: String
     bio: String
-    birthdate: Date
     profilePicture: String
     friendship: Friendship
     friends: [User]
@@ -25,7 +24,6 @@ extend type Mutation {
         firstName: String,
         lastName: String,
         bio: String,
-        birthdate: Date,
         profilePicture: ImageInput,
         keepPreviousPicture: Boolean!
     ): User

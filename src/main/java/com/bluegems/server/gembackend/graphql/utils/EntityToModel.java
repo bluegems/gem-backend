@@ -13,7 +13,6 @@ public class EntityToModel {
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
                 .bio(userEntity.getBio())
-                .birthdate(userEntity.getBirthdate())
                 .profilePicture(userEntity.getProfilePicture())
                 .build();
     }

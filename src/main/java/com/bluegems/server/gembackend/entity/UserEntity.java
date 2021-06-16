@@ -42,9 +42,6 @@ public class UserEntity extends AuditEntity implements Comparable<UserEntity> {
     @Column(name = "bio")
     private String bio;
 
-    @Column(name = "birthdate")
-    private LocalDate birthdate;
-
     @Column(name = "profile_picture")
     private String profilePicture;
 

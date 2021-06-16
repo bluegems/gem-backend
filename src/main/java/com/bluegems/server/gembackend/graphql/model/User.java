@@ -15,7 +15,6 @@ public class User {
     String firstName;
     String lastName;
     String bio;
-    LocalDate birthdate;
     String profilePicture;
     Friendship friendship;
     List<User> friends;

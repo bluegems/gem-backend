@@ -8,6 +8,7 @@ import com.bluegems.server.gembackend.exception.graphql.ThrowableGemGraphQLExcep
 import com.bluegems.server.gembackend.graphql.model.Comment;
 import com.bluegems.server.gembackend.graphql.utils.EntityToModel;
 import com.bluegems.server.gembackend.security.GemUserDetails;
+import com.bluegems.server.gembackend.utils.ValidationUtils;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,7 @@ public class CommentResolver implements GraphQLQueryResolver, GraphQLMutationRes
     @PreAuthorize("isAuthenticated()")
     public Comment createComment(String text, Long postId) {
         try {
+            ValidationUtils.areNonEmptyNorNull(List.of(text));
             String currentUserEmail = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(currentUserEmail);
             return EntityToModel.fromCommentEntity(commentDao.createComment(currentUser, postId, text));

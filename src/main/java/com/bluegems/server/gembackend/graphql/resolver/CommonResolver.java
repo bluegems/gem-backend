@@ -12,6 +12,7 @@ import com.bluegems.server.gembackend.graphql.utils.EntityToModel;
 import com.bluegems.server.gembackend.security.GemUserDetails;
 import com.bluegems.server.gembackend.security.GemUserDetailsService;
 import com.bluegems.server.gembackend.security.jwt.JWTOperations;
+import com.bluegems.server.gembackend.utils.ValidationUtils;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -48,8 +50,9 @@ public class CommonResolver implements GraphQLMutationResolver {
 
     @PreAuthorize("permitAll")
     public String login(String email, String password) {
-        UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(email, password);
         try {
+            ValidationUtils.areNonEmptyNorNull(List.of(email, password));
+            UsernamePasswordAuthenticationToken credentials = new UsernamePasswordAuthenticationToken(email, password);
             authenticationManager.authenticate(credentials);
             log.info("User logged in with email : {}", email);
         } catch (Exception exception) {
@@ -65,11 +68,12 @@ public class CommonResolver implements GraphQLMutationResolver {
 
     @Transactional
     @PreAuthorize("permitAll")
-    public User register(String email, String password, String username, String firstName, String lastName, String bio, LocalDate birthdate, String profilePicture) {
+    public User register(String email, String password, String username, String firstName, String lastName, String bio, String profilePicture) {
         try {
+            ValidationUtils.areNonEmptyNorNull(List.of(email, password, username, firstName));
             AccountEntity accountEntity = accountDao.createAccount(email, password);
             log.info("Account created for email : {}", accountEntity.getEmail());
-            UserEntity userEntity = userDao.createUser(accountEntity.getId(), username, firstName, lastName, bio, birthdate, profilePicture);
+            UserEntity userEntity = userDao.createUser(accountEntity.getId(), username, firstName, lastName, bio, profilePicture);
             log.info("User profile created : {}#{}", userEntity.getUsername(), userEntity.getTag());
             friendshipDao.addDefaultFriends(userEntity);
             log.info("Default friends added for user : {}#{}", userEntity.getUsername(), userEntity.getTag());

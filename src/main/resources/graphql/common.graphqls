@@ -13,7 +13,6 @@ extend type Mutation {
         firstName: String!,
         lastName: String,
         bio: String,
-        birthdate: Date,
         proficlePicture: String
     ): User
 }

@@ -86,7 +86,7 @@ public class UserResolver implements GraphQLQueryResolver, GraphQLMutationResolv
 
     @Transactional
     @PreAuthorize("isAuthenticated()")
-    public User updateUser(String username, String tag, String firstName, String lastName, String bio, LocalDate birthdate, ImageInput profilePicture, Boolean keepPreviousPicture) {
+    public User updateUser(String username, String tag, String firstName, String lastName, String bio, ImageInput profilePicture, Boolean keepPreviousPicture) {
         try {
             String email = ((GemUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
             UserEntity currentUser = userDao.fetchUserByEmail(email);
@@ -94,7 +94,7 @@ public class UserResolver implements GraphQLQueryResolver, GraphQLMutationResolv
             String imgurImageId = currentUser.getProfilePicture();
             if (!keepPreviousPicture)
                 imgurImageId = imgurService.deleteAndUploadImage(currentUser.getProfilePicture(), profilePicture);
-            UserEntity userEntity = userDao.updateUser(currentUser.getUsername(), currentUser.getTag(), username, tag, firstName, lastName, bio, birthdate, imgurImageId);
+            UserEntity userEntity = userDao.updateUser(currentUser.getUsername(), currentUser.getTag(), username, tag, firstName, lastName, bio, imgurImageId);
             return EntityToModel.fromUserEntity(userEntity);
         } catch (Exception exception) {
             log.error("Failed to update user details", exception);
